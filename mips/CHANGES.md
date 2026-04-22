@@ -2,6 +2,18 @@ Change history for MIPS
 =======================
 
 
+Version 1.5.2 - *July 12, 2025*
+-------------------------------
+
+#### 5/12/24
+  - Release 1.5.2.
+  - Move examples `mips_example1.m` and `mips_example2.m` from `lib/t`
+    to their own `examples` directory.
+
+#### 5/10/24
+  - Add feature detection function `have_feature_mips()`, providing
+    implementation of `'mips'` tag for `have_feature()`.
+
 Version 1.5.1 - *May 10, 2024*
 ------------------------------
 

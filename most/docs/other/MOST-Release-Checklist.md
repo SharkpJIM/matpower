@@ -31,10 +31,11 @@ Pre-release
     - `mp-docs-shared/prolog.rst.txt` - in URL in raw-html for |MOSTman|
 - In `README.md` and `docs/src/MOST-manual/MOST-manual.tex`
   - update output of `test_most` in Section 2.2
-    - may require first doing:
+    - may require first doing (to disable all solvers except Gurobi):
       ```matlab
         have_feature('cplex', 0);
         have_feature('glpk', 0);
+        have_feature('highs', 0);
         have_feature('intlinprog', 0);
         have_feature('mosek', 0);
         rmpath('/Users/ray/dev/projects/sopf/dist');
@@ -61,7 +62,7 @@ Pre-release
   - Make updates for current version specific citations:
     - version number (3 places)
     - year
-    - latest version DOI, current is: 10.5281/zenodo.11177189
+    - latest version DOI, current is: 10.5281/zenodo.15871471
       - (update here each time)
     ... in the following places ...
     - CITATION file
@@ -74,6 +75,8 @@ Pre-release
       - search citations in all other projects being updated simultaneously
         - MATPOWER User's Manual
     - search everywhere for 10.5281/zenodo.3236519 and update year (MATPOWER User's Manual)
+      - User's Manual
+    - search everywhere for 10.5281/zenodo.3236535 and update year (MATPOWER Software)
       - User's Manual
 - Copy latest `MATPOWER-manual.aux` to `docs/src/MOST-manual` for
   `\externaldocument`
@@ -102,7 +105,7 @@ Pre-release
 Release
 -------
 - Merge latest `prep-for-release` into `master`.
-- Tag with version number, e.g. `1.3`.
+- Tag with version number, e.g. `1.3.1`.
 - Push `master` to GitHub.
 - Publish new release on GitHub: https://github.com/MATPOWER/most/releases/new
   - use (possibly shortened) contents of `docs/relnotes/MOST-Release-Notes-#.#.md`

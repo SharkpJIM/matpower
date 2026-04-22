@@ -33,6 +33,7 @@ tests = {};
 
 %% MP-Test
 tests{end+1} = 't_test_fcns';
+tests{end+1} = 't_debug_assert';
 tests{end+1} = 't_have_feature';
 
 %% MIPS
@@ -47,12 +48,22 @@ tests{end+1} = 't_nested_struct_copy';
 tests{end+1} = 't_nleqs_master';
 tests{end+1} = 't_pnes_master';
 tests{end+1} = 't_qps_master';
+tests{end+1} = 't_qcqps_master';
 tests{end+1} = 't_miqps_master';
 tests{end+1} = 't_nlps_master';
+tests{end+1} = 't_mp_opt_model';
+tests{end+1} = 't_mm_solve_leqs';
+tests{end+1} = 't_mm_solve_nleqs';
+tests{end+1} = 't_mm_solve_pne';
+tests{end+1} = 't_mm_solve_qcqps';
+tests{end+1} = 't_mm_solve_qps';
+tests{end+1} = 't_mm_solve_miqps';
+tests{end+1} = 't_mm_solve_nlps';
 tests{end+1} = 't_opt_model';
 tests{end+1} = 't_om_solve_leqs';
 tests{end+1} = 't_om_solve_nleqs';
 tests{end+1} = 't_om_solve_pne';
+tests{end+1} = 't_om_solve_qcqps';
 tests{end+1} = 't_om_solve_qps';
 tests{end+1} = 't_om_solve_miqps';
 tests{end+1} = 't_om_solve_nlps';
@@ -89,6 +100,7 @@ if have_feature('mp_core')
     tests{end+1} = 't_run_mp';
     tests{end+1} = 't_run_opf_default';
     tests{end+1} = 't_run_mp_3p';
+    tests{end+1} = 't_convert_1p_to_3p';
     tests{end+1} = 't_pretty_print';
     tests{end+1} = 't_mpxt_reserves';
     tests{end+1} = 't_mpxt_legacy_dcline';

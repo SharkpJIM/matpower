@@ -48,7 +48,7 @@ Download the ZIP file of the latest official versioned release from the
 
 #### Current Development Version
 
-There are also two options for obtaining the most recent development version
+There are also three options for obtaining the most recent development version
 of MATPOWER from the `master` branch on GitHub.
 **Note:** This does _not_ include the [MATPOWER Extras][7d].
 
@@ -70,6 +70,8 @@ of MATPOWER from the `master` branch on GitHub.
    [give Git a try][6]).*
     - Go to the [MATPOWER GitHub repository page][2].
     - Click the green **Clone or download** button, then **Download ZIP**.
+
+3. [![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)][6b]
 
 See [CONTRIBUTING.md][7] for information on how to get a local copy
 of your own MATPOWER fork, if you are interesting in contributing
@@ -103,7 +105,7 @@ was simplified with an install script following version 6.0.
     not need to be modified, so it is recommended that they be kept
     separate from your own code.
 
-2.  **Run the installer.**
+2.  **Run the installer.** *(skip this step for [![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)][6b])*
     - Open MATLAB or Octave and change to the `<MATPOWER>` directory.
     - Run the installer and follow the directions to add the
       required directories to your MATLAB or Octave path, by typing:
@@ -219,6 +221,11 @@ Appendix H of the [MATPOWER User's Manual][8]. A complete, detailed
 change log, even for unreleased versions, is available in the
 [`CHANGES.md`][11] file.
 
+Check out the following three live scripts to explore features introduced
+in MATPOWER 8.1.
+- [![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=MATPOWER/matpower&project=matpower.prj&file=examples/convert_1p_to_3p_ex1.mlx) `convert_1p_to_3p_ex1.mlx` (in `examples`) illustrates the use of the new single-phase to three-phase conversion capabilities.
+- [![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=MATPOWER/matpower&project=matpower.prj&file=mp-opt-model/examples/milp_example1.mlx) `milp_example1.mlx` (in `mp-opt-model/examples`) illustrates the use of MP-Opt-Model and the new `mp.opt_model` class to build and solve an optimization (MILP) model.
+- [![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=MATPOWER/matpower&project=matpower.prj&file=mp-opt-model/examples/qcqp_example1.mlx) `qcqp_example1.mlx` (in `mp-opt-model/examples`) illustrates the new quadratic constraint features and two methods of building and solving a quadratically-constrained quadratic programming (QCQP) model.
 
 Contributing
 ------------
@@ -345,11 +352,11 @@ corresponding case files.
 
 For the sake of reproducibility of research results, it is best to cite
 the specific version of the software used, with the version-specfic DOI.
-For example, for version 8.0 of MATPOWER, use:
+For example, for version 8.1 of MATPOWER, use:
 
->   R. D. Zimmerman, C. E. Murillo-Sanchez (2024). *MATPOWER (Version 8.0)*
+>   R. D. Zimmerman, C. E. Murillo-Sanchez (2025). *MATPOWER (Version 8.1)*
     [Software]. Available: https://matpower.org  
-    doi: [10.5281/zenodo.11212330](https://doi.org/10.5281/zenodo.11212330)
+    doi: [10.5281/zenodo.15871662](https://doi.org/10.5281/zenodo.15871662)
 
 To cite the MATPOWER software generally, without reference to a specific
 version, use the following citation and DOI, with *\<YEAR\>* replaced by the
@@ -367,13 +374,13 @@ found via the general DOI at https://doi.org/10.5281/zenodo.3236535.
 The MATPOWER, MIPS and MOST User's Manuals should also be cited
 explicitly in work that refers to or is derived from their content. As
 with the software, the citation and DOI can be version-specific or
-general, as appropriate. For version 8.0 of the [MATPOWER User's Manual][8],
+general, as appropriate. For version 8.1 of the [MATPOWER User's Manual][8],
 use:
 
 >   R. D. Zimmerman, C. E. Murillo-Sanchez. *MATPOWER User's Manual,
-    Version 8.0.* 2024.  
-    [Online]. Available: https://matpower.org/docs/MATPOWER-manual-8.0.pdf  
-    doi: [10.5281/zenodo.11212313](https://doi.org/10.5281/zenodo.11212313)
+    Version 8.1.* 2025.  
+    [Online]. Available: https://matpower.org/docs/MATPOWER-manual-8.1.pdf  
+    doi: [10.5281/zenodo.15871661](https://doi.org/10.5281/zenodo.15871661)
 
 For a version non-specific citation, use the following citation and DOI,
 with *\<YEAR\>* replaced by the year of the most recent release:
@@ -445,6 +452,7 @@ MATPOWER is distributed as open-source under the [3-clause BSD license][30].
 [4]: https://octave.org
 [5]: https://git-scm.com/downloads
 [6]: https://git-scm.com
+[6b]: https://matlab.mathworks.com/open/github/v1?repo=MATPOWER/matpower&project=matpower.prj
 [7]: CONTRIBUTING.md
 [7a]: https://hub.docker.com/
 [7b]: https://www.docker.com

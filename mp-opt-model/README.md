@@ -16,10 +16,12 @@ System Requirements
 -------------------
 
 *   [MATLAB][3] version 7.9 (R2009b) or later, or
-*   [GNU Octave][4] version 4 or later
+*   [GNU Octave][4] version 6.2 or later [^1]
 *   [MP-Test][5]
 *   [MATPOWER Interior Point Solver (MIPS)][6]
 
+[^1]: All functionality except object copy constructors work on GNU Octave
+4.4 and later.
 
 Installation
 ------------
@@ -42,6 +44,7 @@ of MATLAB or Octave, including setting up your MATLAB/Octave path.
 2.  Add the following directories to your MATLAB or Octave path:
     *   `<MPOM>/lib`
     *   `<MPOM>/lib/t`
+    *   `<MPOM>/examples`
 
 3.  At the MATLAB/Octave prompt, type `test_mp_opt_model` to run the test suite and
     verify that MP-Opt-Model is properly installed and functioning. (Note: The
@@ -53,18 +56,28 @@ of MATLAB or Octave, including setting up your MATLAB/Octave path.
   t_nested_struct_copy....ok
   t_nleqs_master..........ok (30 of 150 skipped)
   t_pnes_master...........ok
-  t_qps_master............ok (100 of 432 skipped)
-  t_miqps_master..........ok (78 of 318 skipped)
-  t_nlps_master...........ok
+  t_qps_master............ok (144 of 504 skipped)
+  t_qcqps_master..........ok (94 of 651 skipped)
+  t_miqps_master..........ok (128 of 371 skipped)
+  t_nlps_master...........ok (16 of 540 skipped)
+  t_mp_opt_model..........ok
+  t_mm_solve_leqs.........ok
+  t_mm_solve_nleqs........ok (36 of 196 skipped)
+  t_mm_solve_pne..........ok
+  t_mm_solve_qcqps........ok (6 of 214 skipped)
+  t_mm_solve_qps..........ok (120 of 449 skipped)
+  t_mm_solve_miqps........ok (106 of 261 skipped)
+  t_mm_solve_nlps.........ok (9 of 506 skipped)
   t_opt_model.............ok
   t_om_solve_leqs.........ok
-  t_om_solve_nleqs........ok (36 of 195 skipped)
+  t_om_solve_nleqs........ok (36 of 196 skipped)
   t_om_solve_pne..........ok
-  t_om_solve_qps..........ok (81 of 388 skipped)
-  t_om_solve_miqps........ok (20 of 131 skipped)
-  t_om_solve_nlps.........ok
-  All tests successful (3461 passed, 345 skipped of 3806)
-  Elapsed time 2.28 seconds.
+  t_om_solve_qcqps........ok (6 of 214 skipped)
+  t_om_solve_qps..........ok (120 of 449 skipped)
+  t_om_solve_miqps........ok (106 of 261 skipped)
+  t_om_solve_nlps.........ok (9 of 506 skipped)
+  All tests successful (6814 passed, 966 skipped of 7780)
+  Elapsed time 18.02 seconds.
 ```
 
 Sample Usage
@@ -76,7 +89,7 @@ and two constraints, one equality and the other inequality, along with
 lower bounds on all of the variables.
 
 ```
-  min  1/2 [y; z]' * Q * [y; z]
+  min  1/2 [y; z]' * H * [y; z]
   y,z
 
 subject to:
@@ -102,31 +115,31 @@ A1 = [ 6 1 5 -4 ];  b1 = 4;
 A2 = [ 4 9 ];       u2 = 2;
 
 %% quadratic cost coefficients
-Q = [ 8  1 -3 -4;
+H = [ 8  1 -3 -4;
       1  4 -2 -1;
      -3 -2  5  4;
      -4 -1  4  12  ];
 ```
 
 Below, we will show two approaches to construct and solve the problem.
-The first method, based on the the Optimization Model class `opt_model`,
+The first method, based on the the Optimization Model class `mp.opt_model`,
 allows you to add variables, constraints and costs to the model
-individually. Then `opt_model` automatically assembles and solves the
+individually. Then `mp.opt_model` automatically assembles and solves the
 full model automatically.
 
 
 ```matlab
 %%-----  METHOD 1  -----
 %% build model
-om = opt_model;
-om.add_var('y', 2, y0, ymin);
-om.add_var('z', 2, z0, [], zmax);
-om.add_lin_constraint('lincon1', A1, b1, b1);
-om.add_lin_constraint('lincon2', A2, [], u2, {'y'});
-om.add_quad_cost('cost', Q, []);
+mm = mp.opt_model;
+mm.var.add('y', 2, y0, ymin);
+mm.var.add('z', 2, z0, [], zmax);
+mm.lin.add(mm.var, 'lincon1', A1, b1, b1);
+mm.lin.add(mm.var, 'lincon2', A2, [], u2, {'y'});
+mm.qdc.add(mm.var, 'cost', H, []);
 
 %% solve model
-[x, f, exitflag, output, lambda] = om.solve();
+[x, f, exitflag, output, lambda] = mm.solve();
 ```
 
 The second method requires you to construct the parameters for the full
@@ -143,10 +156,10 @@ l = [ b1; -Inf ];
 u = [ b1;  u2  ];
 
 %% solve model
-[x, f, exitflag, output, lambda] = qps_master(Q, [], A, l, u, xmin, xmax, x0);
+[x, f, exitflag, output, lambda] = qps_master(H, [], A, l, u, xmin, xmax, x0);
 ```
 
-The above examples are included in `<MPOM>/lib/t/qp_ex1.m` along with
+The above examples are included in `<MPOM>/examples/qp_ex1.m` along with
 some commands to print the results, yielding the output below for
 each approach:
 
@@ -174,8 +187,9 @@ progress output, or modify a solver's default parameters.
 Both approaches can be applied to each of the types of problems that
 MP-Opt-Model handles, namely, LP, QP, MILP, MIQP, NLP and nonlinear equations.
 
-There are also examples in the test files in `<MPOM>/lib/t`, as well as in
-the [`opf_setup()`][12] and [`opf_execute()`][13] functions in [MATPOWER][2].
+There are other examples in `<MPOM>/examples`, in the test files in
+`<MPOM>/lib/t`, as well as in the [`opf_setup()`][12] and
+[`opf_execute()`][13] functions in [MATPOWER][2].
 
 
 Documentation
@@ -202,11 +216,11 @@ function, e.g.: `qps_master`, `miqps_master`, and `nlps_master`.
 We request that publications derived from the use of MP-Opt-Model
 explicitly acknowledge that fact by citing the [MP-Opt-Model User's Manual][7].
 The citation and DOI can be version-specific or general, as appropriate.
-For version 4.2, use:
+For version 5.0, use:
 
->   R. D. Zimmerman. *MP-Opt-Model User's Manual, Version 4.2*. 2024.
-    [Online]. Available: https://matpower.org/docs/MP-Opt-Model-manual-4.2.pdf  
-    doi: [10.5281/zenodo.11177079](https://doi.org/10.5281/zenodo.11177079)
+>   R. D. Zimmerman. *MP-Opt-Model User's Manual, Version 5.0*. 2025.
+    [Online]. Available: https://matpower.org/docs/MP-Opt-Model-manual-5.0.pdf  
+    doi: [10.5281/zenodo.15871431](https://doi.org/10.5281/zenodo.15871431)
 
 For a version non-specific citation, use the following citation and DOI,
 with *\<YEAR\>* replaced by the year of the most recent release:
@@ -236,7 +250,7 @@ MP-Opt-Model is distributed under the [3-clause BSD license][9].
 [1]: https://github.com/MATPOWER/mp-opt-model
 [2]: https://matpower.org/
 [3]: https://www.mathworks.com/
-[4]: https://www.gnu.org/software/octave/
+[4]: https://octave.org
 [5]: https://github.com/MATPOWER/mptest
 [6]: https://github.com/MATPOWER/mips
 [7]: docs/MP-Opt-Model-manual.pdf

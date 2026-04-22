@@ -2,11 +2,25 @@ Change history for MOST
 =======================
 
 
-since 1.3
----------
+since 1.3.1
+-----------
+
+#### 2/16/26
+  - Allow absolute paths for file inputs to `loadgenericdata()` and the
+    functions that call it, e.g. `addstorage()`, `addwind()`, `getprofiles()`,
+    `loadmd()`, `loadstoragedata()`, `loadxgendata()`.
+
+
+Version 1.3.1 - *Jul 12, 2025*
+------------------------------
+
+#### 7/12/25
+  - Release 1.3.1.
+  - Move examples from `lib/t` to their own `examples` directory.
 
 #### 5/23/25
-  - Include HiGHS solver, if available in unit commitment tests.
+  - Include [HiGHS][13] solver (via [HiGHSMEX][14] interface), if
+    available, in unit commitment tests.
 
 #### 3/19/25
   - Fix issue caused by tiny non-zero values for commitment variables.
@@ -364,3 +378,5 @@ Version 1.0 - *Jun 1, 2016*
 [10]: https://github.com/MATPOWER/most/issues/39
 [11]: https://github.com/MATPOWER/mp-opt-model
 [12]: https://github.com/MATPOWER/most/issues/45
+[13]: https://highs.development
+[14]: https://github.com/savyasachi/HiGHSMEX

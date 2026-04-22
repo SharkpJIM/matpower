@@ -2,8 +2,87 @@ Change history for MP-Opt-Model
 ===============================
 
 
-since 4.2
----------
+since version 5.0
+-----------------
+
+
+#### 12/10/25
+   - Add support for the Gurobi's new PDHG LP solver in `qps_gurobi()`.
+
+#### 11/14/25
+  - Add support for the new HiPO interior point LP solver in HiGHS, including
+    `have_feature_highs_hipo()` to detect availability.
+
+#### 10/28/25
+  - Add `fix_integer` and `relax_integer` options to `miqps_master()` and move
+    the implementations from `mp.opt_model.solve()` to `miqps_master()`.
+    *Note: Since the implementation is in `miqps_master()` it is not available
+    directly in the individual solver-specific `miqps_<solver>()` functions.*
+
+#### 10/21/25
+  - Add `fix_integer` option for `mp.opt_model.solve()`. Set to true to fix
+    any integer variables to their initial values, as specified in ``x0`` or
+    ``opt.x0``.
+  - Add MILP example from `examples/miqp_ex1.m` to MILP tests.
+  - Fix typo bug in dimension checking in `set_params()` for quadratic costs.
+
+#### 10/3/25
+  - Avoid error displaying `mp.opt_model` object when variable was added
+    with a sparse dimension argument.
+
+#### 9/25/25
+  - Improve reliability of detection of CLP MEX file.
+
+#### 7/18/25
+  - Fix failing tests in `t_qcqps_master` when `'DEFAULT'` implies `'FMINCON'`
+    (as in MATLAB Online).
+
+
+Version 5.0 - *Jul 12, 2025*
+----------------------------
+
+#### 7/12/25
+  - Release 5.0.
+  - Move examples from `lib/t` to their own `examples` directory.
+
+#### 7/3/25
+  - Add support for Artelys Knitro 15.x which required changes to the
+    prior options handling.
+  - **INCOMPATIBLE CHANGE:** The `knitro_opts` field of the `opt` input
+    to `nlps_master()` and `nlps_knitro()` and the `solve()` method of
+    `opt_model` has been redesigned. It is now a raw Artelys Knitro options
+    struct, so the `opts`, `tol_x` and `tol_f` fields are no longer valid.
+    For `tol_x` and `tol_f`, use `xtol` and `ftol`, and the contents of
+    `opts` should be placed directly in the top level of the `knitro_opts`
+    field.
+  - **INCOMPATIBLE CHANGE:** Remove support for older versions of Knitro,
+    including all references to `ktrlink` for pre-v9 versions. Currently
+    supports Artelys Knitro version 13.1 and later.
+
+#### 6/21/25
+  - Add new `mp.struct2object()` function to convert a struct back to the
+    object from which it was created. Helps with workarounds to the fact
+    that Octave still (as of 10.x) does not support saving/loading of
+    classdef objects. This function allows objects to implement
+    `to_struct()` and `from_struct()` methods to facilitate the process.
+  - Add `to_struct()` and `from_struct()` methods to `mp.opt_model`,
+    `mp.set_manager`, and legacy `opt_model` classes, to facilitate
+    trivial conversion between objects, which Octave cannot save/load,
+    and structs, which it can.
+
+#### 6/10/25
+  - Fix handling of scalar inputs for vector parameters when adding an
+    empty set of variables or linear/quadratic constraints. Now
+    properly "expands" them to an empty vector ([issue #16][18]).
+  - Update handling by `mp.sm_quad_cost` of constant term for
+    quadratic costs ([issue #15][17]):
+    - When `H` is empty, a scalar `k` will no longer be expanded
+      _(implicitly)_ to a vector, rather it will result in a scalar
+      cost set.
+    - When `H` is a vector and `k` is a scalar, `k` will be expanded
+      _explicitly_ to a vector.
+    The `mp.sm_quad_cost_legacy` class is unchanged, so this change
+    affects only `mp.opt_model`, not the legacy `opt_model`.
 
 #### 5/23/25
   - Add support to `qps_master()` and `miqps_master()` for the
@@ -627,3 +706,5 @@ Version 0.7.0 - *Jun 20, 2019*
 [14]: https://www.artelys.com/solvers/knitro/
 [15]: https://highs.dev
 [16]: https://github.com/savyasachi/HiGHSMEX
+[17]: https://github.com/MATPOWER/matpower/issues/15
+[18]: https://github.com/MATPOWER/matpower/issues/16

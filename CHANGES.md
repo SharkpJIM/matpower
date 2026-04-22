@@ -10,12 +10,88 @@ For change history for [MP-Opt-Model][27], see [mp-opt-model/CHANGES.md](mp-opt-
 For change history for [MOST][3], see [most/CHANGES.md](most/CHANGES.md).
 
 
-since 8.0
----------
+since version 8.1
+-----------------
+
+#### 3/10/26
+  - Add to `mp_table` the ability to delete rows with `T(*, :) = []` syntax,
+    as with MATLAB tables.
+
+#### 2/16/26
+  - Add pretty-printing of power for buslink elements.
+    *Thanks to Wilson González Vanegas.*
+  - Add 11-bus example case from Kundur, Power System Stability and Control.
+    *Thanks to Mirko Todorovski.*
+
+#### 9/25/25
+  - Skip failing interior point algorithm for R2025b `linprog` in DC OPF tests.
+
+
+Version 8.1 - *Jul 12, 2025
+---------------------------
+
+#### 7/12/25
+  - Release 8.1.
+  - Update live script `convert_1p_to_3p_ex1.mlx` to work on older
+    versions of MATLAB, and move from `lib/t` to its own `examples`
+    directory, which is now included in the paths added by
+    `install_matpower`.
+  - Add `examples/cpf_example.m` script to generate CPF nose-curve
+    Figure 5-1 in the User's Manual.
+
+#### 7/9/25
+  - Update to MP-Opt-Model 5.0, including:
+    - New `mp.opt_model` class replaces legacy `opt_model` and `mp_idx_manager`
+      classes with a new modeling API. *The legacy classes are retained for
+      backward compatibility.*
+    - Support for [Artelys Knitro][39] 15.x, which required changes to
+      the prior options handling.
+    - Enhancements listed previously, and much more. See [MP-Opt-Model 5.0
+      release notes][42] for details.
+
+#### 7/5/25
+  - Add a new 59 bus Australian case.
+    *Thanks to Mory Najafi.*
+    - `case59` - 59 bus, 14 generator Australian network.
+
+#### 7/4/25
+  - New utility, `mp.case_utils.convert_1p_to_3p()`, converts a standard
+    single-phase MATPOWER case to an equivalent balanced three-phase
+    case.
+    *Thanks to Wilson González Vanegas.*
+  - New live script `convert_1p_to_3p_ex1.mlx` (in `lib/t`) illustrates
+    the use of the new single-phase to three-phase conversion capabilities.
+    *Thanks to Wilson González Vanegas.*
+  - Add a new distribution system case.
+    *Thanks to Paul S. Moses.*
+    - `case1197` – 1197-bus radial distribution case
+  - The `save2psse` function now creates distinct generator IDs for
+    cases with multiple generators at a single bus.
+    *Thanks to Irabiel Romero.*
+  - Add new function `save2psse_rop` to save a MATPOWER case to a PSS/E
+    ROP (Raw Operating Point) file.
+    *Thanks to Irabiel Romero.*
+
+#### 6/24/25
+  - Add support to `savecase()` for three-phase prototype data.
 
 #### 5/23/25
-  - Add support to `mpoption()` for HiGHS solver options.
-  - Include HiGHS solver, if available in DC OPF tests.
+  - Major update to MP-Opt-Model with:
+    - Support for quadratic constraints in `opt_model` and
+      quadratically-constrained quadratic programming (QCQP) problems,
+      including functions `qcqps_master()`, `qcqps_gurobi()`,
+      `qcqps_knitro()`, `qcqps_nlps()`, and more.
+      *Thanks to Wilson González Vanegas.*
+    - Support for [Artelys Knitro][39] solver for LP and QP problems,
+      including functions `qps_knitro()`, `knitrover()`, and
+      `artelys_knitro_options()`.
+      *Thanks to Wilson González Vanegas.*
+    - Support for the open-source [HiGHS][41] solver for LP, QP, and
+      MILP problems, including functions `miqps_highs()`, `qps_highs()`,
+      `have_feature_highs()`, `highsver()`, and `highs_options()`, based
+      on the [HiGHSMEX][41] interface.
+  - Add support to `mpoption()` for [HiGHS][41] solver options.
+  - Include [HiGHS][41] solver, if available in DC OPF tests.
 
 #### 5/15/25
   - Add prototype three-phase shunt model.
@@ -3482,3 +3558,7 @@ First Public Release – *Jun 25, 1997*
 [36]: https://github.com/MATPOWER/matpower/issues/210
 [37]: https://github.com/MATPOWER/matpower/issues/223
 [38]: https://github.com/MATPOWER/matpower/issues/256
+[39]: https://www.artelys.com/solvers/knitro/
+[40]: https://github.com/savyasachi/HiGHSMEX
+[41]: https://highs.dev
+[42]: https://github.com/MATPOWER/mp-opt-model/blob/master/docs/relnotes/MP-Opt-Model-Release-Notes-5.0.md

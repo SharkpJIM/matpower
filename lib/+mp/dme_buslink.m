@@ -11,12 +11,19 @@ classdef dme_buslink < mp.dm_element
 %   ===========  =========  ========================================
 %   ``bus``      *integer*  bus ID (``uid``) of single phase bus
 %   ``bus3p``    *integer*  bus ID (``uid``) of 3-phase bus
+%   ``p1``       *double*   phase 1 active power output *(kW)*
+%   ``p2``       *double*   phase 2 active power output *(kW)*
+%   ``p3``       *double*   phase 3 active power output *(kW)*
+%   ``q1``       *double*   phase 1 reactive power output *(kVAr)*
+%   ``q2``       *double*   phase 2 reactive power output *(kVAr)*
+%   ``q3``       *double*   phase 3 reactive power output *(kVAr)*
 %   ===========  =========  ========================================
 
 %   MATPOWER
-%   Copyright (c) 2021-2024, Power Systems Engineering Research Center (PSERC)
-%   by Ray Zimmerman, PSERC Cornell
-%   and Carlos E. Murillo-Sanchez, PSERC Cornell & Universidad Nacional de Colombia
+%   Copyright (c) 2021-2026, Power Systems Engineering Research Center (PSERC)
+%   by Ray Zimmerman, PSERC Cornell,
+%   Carlos E. Murillo-Sanchez, PSERC Cornell & Universidad Nacional de Colombia,
+%   and Wilson Gonzalez Vanegas, Universidad Nacional de Colombia Sede Manizales
 %
 %   This file is part of MATPOWER.
 %   Covered by the 3-clause BSD License (see LICENSE file for details).
@@ -25,12 +32,6 @@ classdef dme_buslink < mp.dm_element
     properties
         bus         % bus index vector (all buslinks)
         bus3p       % bus3p index vector (all buslinks)
-        pg1_start   % initial phase 1 active power (p.u.) for buslinks that are on
-        pg2_start   % initial phase 2 active power (p.u.) for buslinks that are on
-        pg3_start   % initial phase 3 active power (p.u.) for buslinks that are on
-        qg1_start   % initial phase 1 reactive power (p.u.) for buslinks that are on
-        qg2_start   % initial phase 2 reactive power (p.u.) for buslinks that are on
-        qg3_start   % initial phase 3 reactive power (p.u.) for buslinks that are on
     end     %% properties
 
     methods
@@ -62,7 +63,7 @@ classdef dme_buslink < mp.dm_element
         function names = main_table_var_names(obj)
             %
             names = horzcat( main_table_var_names@mp.dm_element(obj), ...
-                {'bus', 'bus3p'});
+                {'bus', 'bus3p', 'p1', 'p2', 'p3', 'q1', 'q2', 'q3'});
         end
 
 %         function vars = export_vars(obj)
@@ -136,16 +137,19 @@ classdef dme_buslink < mp.dm_element
         function h = pp_get_headers_det(obj, dm, out_e, mpopt, pp_args)
             %
             h = [ pp_get_headers_det@mp.dm_element(obj, dm, out_e, mpopt, pp_args) ...
-                {   '                      3-ph', ...
-                    'Link ID    Bus ID    Bus ID   Status', ...
-                    '--------  --------  --------  ------' } ];
-            %%       1234567 123456789 123456789 -----1
+                {   '                      3-ph            Phase A Power    Phase B Power    Phase C Power', ...
+                    'Link ID    Bus ID    Bus ID   Status   (kW)   (kVAr)    (kW)   (kVAr)    (kW)   (kVAr)', ...
+                    '--------  --------  --------  ------  ------  ------   ------  ------   ------  ------' } ];
+            %%       1234567 123456789 123456789 -----1 1234567.9 12345.7 123456.8 12345.7 123456.8 12345.7
         end
 
         function str = pp_data_row_det(obj, dm, k, out_e, mpopt, fd, pp_args)
             %
-            str = sprintf('%7d %9d %9d %6d', ...
-                obj.tab.uid(k), obj.tab.bus(k), obj.tab.bus3p(k), obj.tab.status(k) );
+            str = sprintf('%7d %9d %9d %6d %9.2f %7.1f %8.2f %7.1f %8.2f %7.1f', ...
+                obj.tab.uid(k), obj.tab.bus(k), obj.tab.bus3p(k), obj.tab.status(k),...
+                obj.tab.p1(k), obj.tab.q1(k), ...
+                obj.tab.p2(k), obj.tab.q2(k), ...
+                obj.tab.p3(k), obj.tab.q3(k));
         end
     end     %% methods
 end         %% classdef

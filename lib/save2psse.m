@@ -16,7 +16,7 @@ function fname_out = save2psse(fname, mpc, rawver)
 %   SAVE2PSSE(FNAME, CASESTRUCT, VERSION) (not yet implmented)
 
 %   MATPOWER
-%   Copyright (c) 2017-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2017-2025, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -126,8 +126,15 @@ if isfield(mpc, 'genfuel')
 end
 if ng
     %%             I,  ID,    PG,    QG,    QT,    QB,    VS,IREG,MBASE,ZR,ZX, RT, XT,GTAP,STAT,RMPCT,PT,PB,O1,F1,...,O4,F4,WMOD,WPF
+    GenIDs = ones(ng, 1);
+    counts = zeros(nb, 1);
+    for i = 1:ng
+        b = e2i(mpc.gen(i, GEN_BUS));
+        counts(b) = counts(b) + 1;
+        GenIDs(i) = counts(b);
+    end
     fprintf(fd, '%6d, %2d, %9.7g, %9.7g, %9.7g, %9.7g, %8.7g, %d, %7g, %g, %g, %g, %g, %g, %d, %g, %9.7g, %9.7g, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d\n', ...
-        [ mpc.gen(ig, GEN_BUS) ones(ng, 1) mpc.gen(ig, [PG QG QMAX QMIN VG]) ...
+        [ mpc.gen(ig, GEN_BUS) GenIDs mpc.gen(ig, [PG QG QMAX QMIN VG]) ...
           zeros(ng, 1) mpc.gen(ig, MBASE) zeros(ng, 1) ones(ng, 1) ...
           zeros(ng, 2) ones(ng, 1) (mpc.gen(ig, GEN_STATUS) > 0) ...
           100*ones(ng, 1) mpc.gen(ig, [PMAX PMIN]) ones(ng, 2) ...
@@ -135,7 +142,6 @@ if ng
           zeros(ng, 1) ones(ng, 1) wind ones(ng, 1) ...
         ]');
 end
-%%----- TODO: add correct ID value for multiple generators at a bus
 fprintf(fd, '0 / END OF GENERATOR DATA, BEGIN BRANCH DATA\n');
 
 %% Non-Transformer Branch Data

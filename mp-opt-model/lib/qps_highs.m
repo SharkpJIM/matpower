@@ -176,12 +176,6 @@ end
 if isempty(x0)
     x0 = zeros(nx, 1);
 end
-if nA == 0      %% unconstrained
-    %% add single non-binding constraint
-    A = sparse(1, nx);
-    l = -Inf;
-    u =  Inf;
-end
 
 %% default options
 if ~isempty(opt) && isfield(opt, 'verbose') && ~isempty(opt.verbose)
@@ -220,9 +214,16 @@ if verbose
     names = struct( ...
         'choose', 'default', ...
         'simplex', 'dual simplex', ...
-        'ipm', 'interior point', ...
+        'ipm', 'interior point (auto)', ...
+        'ipx', 'interior point (IPX)', ...
+        'hipo', 'interior point (HiPO)', ...
         'pdlp', 'primal-dual hybrid gradient' );
-    fprintf('HiGHS Version %s -- %s %s solver\n', vn, names.(solver), lpqp);
+    if ismember(solver, fieldnames(names))
+        solver_name =  names.(solver);
+    else
+        solver_name = 'unknown';
+    end
+    fprintf('HiGHS Version %s -- %s %s solver\n', vn, solver_name, lpqp);
 end
 [soln, info, opts, basis] = callhighs(c, A, l, u, xmin, xmax, H, [], highs_opt);
 if verbose
@@ -239,18 +240,26 @@ output = info;
 if nA == 0      %% unconstrained
     mu_l = [];
     mu_u = [];
-else
+elseif soln.dual_valid
     mu_l =  soln.row_dual;
     mu_u = -soln.row_dual;
     mu_l(mu_l < 0) = 0;
     mu_u(mu_u < 0) = 0;
+else
+    mu_l = NaN(nA, 1);
+    mu_u = NaN(nA, 1);
 end
 
 %% variable bounds
-lam_lower =  soln.col_dual;
-lam_upper = -soln.col_dual;
-lam_lower(lam_lower < 0) = 0;
-lam_upper(lam_upper < 0) = 0;
+if soln.dual_valid
+    lam_lower =  soln.col_dual;
+    lam_upper = -soln.col_dual;
+    lam_lower(lam_lower < 0) = 0;
+    lam_upper(lam_upper < 0) = 0;
+else
+    lam_lower = NaN(nx, 1);
+    lam_upper = NaN(nx, 1);
+end
 
 %% package lambdas
 lambda = struct( ...

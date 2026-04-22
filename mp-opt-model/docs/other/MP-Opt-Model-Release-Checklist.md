@@ -43,7 +43,7 @@ Pre-release
   - Make updates for current version specific citations:
     - version number (3 places)
     - year
-    - latest version DOI, current is: 10.5281/zenodo.11177079
+    - latest version DOI, current is: 10.5281/zenodo.15871431
       - (update here each time)
     ... in the following places ...
     - CITATION file
@@ -55,6 +55,10 @@ Pre-release
       - User's Manual
       - search citations in all other projects being updated simultaneously
         - MATPOWER User's Manual
+    - search everywhere for 10.5281/zenodo.3236519 and update year (MATPOWER User's Manual)
+      - User's Manual
+    - search everywhere for 10.5281/zenodo.3236535 and update year (MATPOWER Software)
+      - User's Manual
 - Copy latest `MIPS-manual.aux` to `docs/src/MP-Opt-Model-manual` for
   `\externaldocument`
 - Create `MP-Opt-Model-manual.pdf` from `MP-Opt-Model-manual.tex` and move
@@ -83,7 +87,7 @@ Pre-release
 Release
 -------
 - Merge latest `prep-for-release` into `master`.
-- Tag with version number, e.g. `4.2`.
+- Tag with version number, e.g. `5.0`.
 - Push `master` to GitHub.
 - Publish new release on GitHub: https://github.com/MATPOWER/mp-opt-model/releases/new
   - use (possibly shortened) contents of `docs/relnotes/MP-Opt-Model-Release-Notes-#.#.md`

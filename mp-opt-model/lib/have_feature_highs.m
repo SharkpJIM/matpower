@@ -20,8 +20,8 @@ vstr = '';
 rdate = '';
 if TorF
     try
-        vstr = char(callhighs("ver"));
-    catch % gurobiError
+        vstr = char(callhighs(string('ver')));
+    catch
         TorF = 0;
         fprintf('HiGHS Error!\n');
     end

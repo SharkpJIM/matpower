@@ -8,8 +8,9 @@ classdef (Abstract) mme_buslink_pf_ac < mp.mme_buslink
 % and for forming and adding voltage and reactive power constraints.
 
 %   MATPOWER
-%   Copyright (c) 2021-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2021-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
+%   and Wilson Gonzalez Vanegas, Universidad Nacional de Colombia Sede Manizales
 %
 %   This file is part of MATPOWER.
 %   Covered by the 3-clause BSD License (see LICENSE file for details).
@@ -138,6 +139,24 @@ classdef (Abstract) mme_buslink_pf_ac < mp.mme_buslink
                     A_vm(d_vm, :) = [];
                     b_vm(d_vm) = [];
                 end
+            end            
+        end
+
+        function obj = data_model_update_on(obj, mm, nm, dm, mpopt)
+            %
+
+            dme = obj.data_model_element(dm);
+            nme = obj.network_model_element(nm);
+
+            ss = nm.get_idx('state');
+
+            for p = 1:nme.nz
+                %% buslink complex power flows
+                zbl = nm.soln.z(ss.i1.buslink(p):ss.iN.buslink(p));
+
+                %% update in the data model
+                dme.tab.(sprintf('p%d', p))(dme.on) = real(zbl) * dm.base_kva;
+                dme.tab.(sprintf('q%d', p))(dme.on) = imag(zbl) * dm.base_kva;
             end
         end
     end     %% methods
