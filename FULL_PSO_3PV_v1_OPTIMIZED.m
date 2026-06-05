@@ -292,13 +292,6 @@ if isempty(plot_choice) || lower(plot_choice) == 'y'
     
     colors = lines(9);
     
-    %% --- Hàm helper thay thế sgtitle để tránh lỗi font ---
-    function add_suptitle(str)
-        axes('Position',[0 0 1 1],'Visible','off');
-        text(0.5, 0.98, str, 'HorizontalAlignment','center', 'FontSize', 13, ...
-            'FontWeight','bold', 'Units','normalized');
-    end
-    
     %% FIGURE 1: Vt TẠI CÁC NÚT PV & EV (3 SCENARIO)
     figure('Name','FIG 1: Vt tai cac nut PV & EV','Color','w','Position',[50 50 1400 900]);
     
@@ -318,8 +311,8 @@ if isempty(plot_choice) || lower(plot_choice) == 'y'
         legend('Base', '+EV', '+EV+PV', 'Location','best');
         grid on; xlim([1 24]); ylim([0.88 1.06]);
     end
-    add_suptitle(sprintf('DIEN AP TUC THOI V_t TAI CAC NUT PV & EV | PV @ [%d %d %d] | EV @ [%s]', ...
-        best_PV1, best_PV2, best_PV3, sprintf('%d ', EV_Bus)));
+    sgtitle(sprintf('DIEN AP TUC THOI V_t TAI CAC NUT PV & EV | PV @ [%d %d %d] | EV @ [%s]', ...
+        best_PV1, best_PV2, best_PV3, sprintf('%d ', EV_Bus)), 'FontSize', 13, 'FontWeight','bold');
     
     %% FIGURE 2: It DÒNG NHÁNH ĐẾN CÁC NÚT PV & EV
     figure('Name','FIG 2: It nhanh den cac nut PV & EV','Color','w','Position',[100 100 1400 900]);
@@ -345,7 +338,7 @@ if isempty(plot_choice) || lower(plot_choice) == 'y'
         legend('Base', '+EV', '+EV+PV', 'Location','best');
         grid on; xlim([1 24]);
     end
-    add_suptitle('DONG DIEN NHANH I_t DEN CAC NUT PV & EV');
+    sgtitle('DONG DIEN NHANH I_t DEN CAC NUT PV & EV', 'FontSize', 13, 'FontWeight','bold');
     
     %% FIGURE 3: DeltaP TỔN THẤT TÁC DỤNG
     figure('Name','FIG 3: DeltaP ton that tac dung','Color','w','Position',[150 150 1400 700]);
@@ -373,7 +366,7 @@ if isempty(plot_choice) || lower(plot_choice) == 'y'
     legend('show', 'Location','best');
     grid on; xlim([1 24]);
     
-    add_suptitle('TON THAT CONG SUAT TAC DUNG dP');
+    sgtitle('TON THAT CONG SUAT TAC DUNG dP', 'FontSize', 13, 'FontWeight','bold');
     
     %% FIGURE 4: DeltaQ TỔN THẤT PHẢN KHÁNG
     figure('Name','FIG 4: DeltaQ ton that phan khang','Color','w','Position',[200 200 1400 700]);
@@ -401,7 +394,7 @@ if isempty(plot_choice) || lower(plot_choice) == 'y'
     legend('show', 'Location','best');
     grid on; xlim([1 24]);
     
-    add_suptitle('TON THAT CONG SUAT PHAN KHANG dQ');
+    sgtitle('TON THAT CONG SUAT PHAN KHANG dQ', 'FontSize', 13, 'FontWeight','bold');
     
     %% FIGURE 5: SO SÁNH V-PROFILE TOÀN MẠNG TẠI GIỜ ĐỈNH
     [~, peak_h] = max(P_EV_24h + total_base_load_MW * 0.6);
@@ -438,7 +431,7 @@ if isempty(plot_choice) || lower(plot_choice) == 'y'
     legend('Base', '+EV', '+EV+PV', 'Location','best');
     grid on; xlim([1 24]);
     
-    add_suptitle('TONG HOP TAC DONG CUA EV VA PV TOI UU');
+    sgtitle('TONG HOP TAC DONG CUA EV VA PV TOI UU', 'FontSize', 13, 'FontWeight','bold');
     
     %% ===================== FIGURE 7: SƠ ĐỒ LƯỚI RADIAL ===================
     fprintf('   >> Vẽ sơ đồ lưới Radial...\n');
@@ -557,8 +550,8 @@ if isempty(plot_choice) || lower(plot_choice) == 'y'
         sprintf('PV toi uu (3 tram) @ [%d, %d, %d]', best_PV1, best_PV2, best_PV3)}, ...
         'Location','southeast', 'FontSize', 10, 'Box','on');
     
-    title(sprintf('SO DO BO TRI PV TOI UU & EV TREN LUOI IEEE 33-BUS (Radial)\n'), ...
-        'FontWeight','bold', 'FontSize', 13);
+    sgtitle(sprintf('SO DO BO TRI PV TOI UU & EV TREN LUOI IEEE 33-BUS (Radial)'), ...
+        'FontSize', 13, 'FontWeight','bold');
     
     axis equal;
     grid on;
